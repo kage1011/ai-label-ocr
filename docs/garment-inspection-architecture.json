@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "AI Garment Multi-Label Size Inspection Architecture",
+    "output": "docs/architecture-diagram.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "worker", "type": "external", "label": "QC Worker", "sublabel": "Packing Station", "pos": [40, 270], "size": [130, 60] },
+    { "id": "foot_pedal", "type": "frontend", "label": "Foot Pedal", "sublabel": "USB Switch Trigger", "pos": [220, 160], "size": [140, 60], "tag": "0ms latency" },
+    { "id": "camera_rig", "type": "frontend", "label": "Fixed Camera", "sublabel": "Ring Light Rig", "pos": [220, 270], "size": [140, 60], "tag": "Anti-glare" },
+    { "id": "alarm_unit", "type": "external", "label": "Buzzer / Light", "sublabel": "Green PASS / Red NG", "pos": [220, 380], "size": [140, 60], "tag": "Instant Alert" },
+    { "id": "api_server", "type": "backend", "label": "Express API", "sublabel": "Node.js :3000", "pos": [440, 270], "size": [140, 60] },
+    { "id": "ocr_engine", "type": "backend", "label": "Tesseract OCR", "sublabel": "Local Worker Thread", "pos": [650, 180], "size": [150, 60], "tag": "Offline Local" },
+    { "id": "matching_core", "type": "backend", "label": "Inspector Core", "sublabel": "Cross-Label Matcher", "pos": [650, 360], "size": [150, 60], "tag": "< 1ms check" },
+    { "id": "sql_server", "type": "database", "label": "MS SQL Server", "sublabel": "Audit Logs :1433", "pos": [870, 270], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Inspection Station Hardware", "wraps": ["foot_pedal", "camera_rig", "alarm_unit"] },
+    { "kind": "region", "label": "AI Inspection Backend (Clean Architecture)", "wraps": ["api_server", "ocr_engine", "matching_core"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "worker", "to": "foot_pedal", "label": "Step pedal", "variant": "emphasis" },
+    { "id": "c2", "from": "foot_pedal", "to": "camera_rig", "label": "Trigger", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c3", "from": "camera_rig", "to": "api_server", "label": "Upload images", "variant": "emphasis" },
+    { "id": "c4", "from": "api_server", "to": "ocr_engine", "label": "Recognize text", "fromSide": "top", "toSide": "left" },
+    { "id": "c5", "from": "ocr_engine", "to": "matching_core", "label": "Parsed labels", "fromSide": "bottom", "toSide": "top" },
+    { "id": "c6", "from": "matching_core", "to": "sql_server", "label": "Audit record", "fromSide": "right", "toSide": "bottom", "variant": "dashed" },
+    { "id": "c7", "from": "matching_core", "to": "alarm_unit", "label": "PASS/NG signal", "fromSide": "bottom", "toSide": "right", "variant": "emphasis" },
+    { "id": "c8", "from": "alarm_unit", "to": "worker", "label": "Chime / Alarm", "fromSide": "left", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Hardware Rig", "items": ["Fixed 1080p camera with ring lighting", "Foot pedal frees operator hands", "Buzzer and tower light output"] },
+    { "dot": "emerald", "title": "Engine Performance", "items": ["Regex size extraction with boundary filters", "2XL and XXL normalized equivalence", "Sub-millisecond multi-label decision"] },
+    { "dot": "rose", "title": "Audit & Traceability", "items": ["MS SQL Server stores each garment scan", "Query history via GET /api/v1/garment-inspections/history"] }
+  ]
+}

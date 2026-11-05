@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "5e0d4179-2f9c-48f9-bc53-253b3485794e",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\candidate.json",
+  "output": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\ai-label-ocr.html",
+  "specification": {
+    "sha256": "3af7a09876dffcb9de2afdd0eb4a17f5236b7fa0666bc32948f238c7c3e8e11d",
+    "bytes": 4857
+  },
+  "artifact": {
+    "sha256": "1de6eb64327ad9e5037852e3d96257092aead36cf1c800384d7b26703f282cdc",
+    "bytes": 841930
+  }
+}

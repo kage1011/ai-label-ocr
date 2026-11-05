@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\candidate.json",
+    "sha256": "3af7a09876dffcb9de2afdd0eb4a17f5236b7fa0666bc32948f238c7c3e8e11d",
+    "bytes": 4857
+  },
+  "artifact": {
+    "path": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\ai-label-ocr.html",
+    "sha256": "1de6eb64327ad9e5037852e3d96257092aead36cf1c800384d7b26703f282cdc",
+    "bytes": 841930
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\review-final-3\\ai-label-ocr.finalize.json",
+    "summaryReceipt": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\review-final-3\\ai-label-ocr.finalize-summary.json",
+    "browserCheckReceipt": "D:\\11.source\\NEW GIT\\ai-label-ocr\\.archify\\architecture-ai-label-ocr-20261105-112608\\review-final-3\\ai-label-ocr.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 3188,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "routesOverSuggestedBends": 1
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [],
+      "detours": [
+        {
+          "relationship": {
+            "id": "inspector-to-api",
+            "from": "inspection-rules",
+            "to": "http-api",
+            "label": "PASS / NG result",
+            "collectionIndex": 2,
+            "artifactIndex": 3
+          },
+          "bends": 3,
+          "stretch": 1.157
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "inspection-rules → http-api needs 3 bends: move node inspection-rules or http-api so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

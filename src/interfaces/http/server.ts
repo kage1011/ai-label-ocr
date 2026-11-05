@@ -4,12 +4,12 @@ import path from "path";
 import { ENV } from "../../config/env.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { createApiRouter } from "./routes/api.routes.js";
-import { LabelController } from "./controllers/label.controller.js";
 import { HealthController } from "./controllers/health.controller.js";
+import { GarmentInspectionController } from "./controllers/garment-inspection.controller.js";
 
 export function createServer(
-  labelController: LabelController,
-  healthController: HealthController
+  healthController: HealthController,
+  garmentController: GarmentInspectionController
 ): Application {
   const app = express();
 
@@ -18,12 +18,11 @@ export function createServer(
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Static files for uploaded images & generated docs
+  // Static files for uploaded images
   app.use("/uploads", express.static(ENV.UPLOAD.DIR));
-  app.use("/docs", express.static(path.resolve(process.cwd(), "docs")));
 
   // API Routes
-  const apiRouter = createApiRouter(labelController, healthController);
+  const apiRouter = createApiRouter(healthController, garmentController);
   app.use("/api/v1", apiRouter);
 
   // Global Error Handler
@@ -31,4 +30,3 @@ export function createServer(
 
   return app;
 }
-

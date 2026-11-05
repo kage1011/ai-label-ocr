@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Kiến trúc AI Label OCR",
+    "locale": "en",
+    "output": ".archify/architecture-ai-label-ocr-20261105-112608/ai-label-ocr.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "operator-client",
+      "type": "external",
+      "label": "Client / công nhân",
+      "sublabel": "Gửi thông tin tem",
+      "pos": [40, 300],
+      "size": [150, 78]
+    },
+    {
+      "id": "http-api",
+      "type": "backend",
+      "label": "HTTP API",
+      "sublabel": "Express · REST /api/v1",
+      "pos": [340, 300],
+      "size": [210, 86]
+    },
+    {
+      "id": "inspection-rules",
+      "type": "backend",
+      "label": "Garment Inspector",
+      "sublabel": "Trích xuất · chuẩn hóa · đối chiếu size",
+      "pos": [740, 300],
+      "size": [190, 84]
+    },
+    {
+      "id": "tesseract-ocr",
+      "type": "backend",
+      "label": "OCR Engine",
+      "sublabel": "Tesseract.js worker",
+      "pos": [740, 100],
+      "size": [190, 78]
+    },
+    {
+      "id": "uploaded-images",
+      "type": "backend",
+      "label": "Thư mục uploads",
+      "sublabel": "Multer · lưu ảnh trên đĩa",
+      "pos": [340, 100],
+      "size": [210, 78]
+    },
+    {
+      "id": "sql-server",
+      "type": "database",
+      "label": "Microsoft SQL Server",
+      "sublabel": "TypeORM · lịch sử kiểm tra",
+      "pos": [340, 520],
+      "size": [210, 84]
+    }
+  ],
+  "connections": [
+    {
+      "id": "client-to-api",
+      "from": "operator-client",
+      "to": "http-api",
+      "label": "HTTP request",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-to-inspector",
+      "from": "http-api",
+      "to": "inspection-rules",
+      "label": "validate labels"
+    },
+    {
+      "id": "inspector-to-api",
+      "from": "inspection-rules",
+      "to": "http-api",
+      "label": "PASS / NG result"
+    },
+    {
+      "id": "api-to-ocr",
+      "from": "http-api",
+      "to": "tesseract-ocr",
+      "label": "scan image"
+    },
+    {
+      "id": "ocr-to-api",
+      "from": "tesseract-ocr",
+      "to": "http-api",
+      "label": "text + confidence"
+    },
+    {
+      "id": "api-to-uploads",
+      "from": "http-api",
+      "to": "uploaded-images",
+      "label": "disk upload",
+      "variant": "dashed"
+    },
+    {
+      "id": "api-to-database",
+      "from": "http-api",
+      "to": "sql-server",
+      "label": "optional write",
+      "variant": "dashed"
+    },
+    {
+      "id": "database-to-api",
+      "from": "sql-server",
+      "to": "http-api",
+      "label": "read history",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Đầu vào và API",
+      "items": [
+        "POST /api/v1/garment-inspections/validate nhận dữ liệu JSON.",
+        "POST /api/v1/garment-inspections/scan-images nhận ảnh sizeLabel, careLabel, hangTag.",
+        "GET /api/v1/garment-inspections/history trả về tối đa 50 bản ghi gần nhất."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Luồng ảnh và kiểm tra",
+      "items": [
+        "Multer ghi ảnh vào thư mục uploads; controller chuyển đường dẫn ảnh sang Tesseract.js.",
+        "Inspector so khớp các tem bắt buộc SIZE_LABEL, CARE_LABEL và HANG_TAG theo mặc định.",
+        "Thiếu tem, không đọc được size hoặc size lệch sẽ cho kết quả NG; các size đồng nhất cho kết quả PASS."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Lưu trữ và trạng thái",
+      "items": [
+        "SQL Server là tùy chọn: nếu kết nối lúc khởi động thất bại, API vẫn chạy ở chế độ không lưu lịch sử.",
+        "GET /api/v1/health báo trạng thái kết nối database và tên OCR engine."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Phạm vi và nguồn mã",
+      "items": [
+        "Sơ đồ phản ánh worktree cục bộ hiện tại; một số thay đổi chưa commit nên không có liên kết nguồn gắn với revision.",
+        "src/index.ts:14-33; src/interfaces/http/server.ts:10-31; src/interfaces/http/routes/api.routes.ts:6-15; src/interfaces/http/routes/garment-inspection.routes.ts:6-27.",
+        "src/interfaces/http/controllers/garment-inspection.controller.ts:18-108, 120-167; src/application/services/garment-inspector.service.ts:8-20, 93-184.",
+        "src/interfaces/http/middlewares/upload.middleware.ts:7-44; src/infrastructure/ocr/tesseract-ocr.service.ts:13-62; src/infrastructure/database/typeorm-datasource.ts:6-39; src/domain/entities/GarmentInspectionRecord.ts."
+      ]
+    }
+  ]
+}

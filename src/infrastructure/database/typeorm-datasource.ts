@@ -1,8 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { ENV } from "../../config/env.js";
-import { Label } from "../../domain/entities/Label.js";
-import { ScanLog } from "../../domain/entities/ScanLog.js";
+import { GarmentInspectionRecord } from "../../domain/entities/GarmentInspectionRecord.js";
 
 export const AppDataSource = new DataSource({
   type: "mssql",
@@ -13,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: ENV.DB.DATABASE,
   synchronize: ENV.DB.SYNCHRONIZE,
   logging: ENV.DB.LOGGING,
-  entities: [Label, ScanLog],
+  entities: [GarmentInspectionRecord],
   migrations: [],
   subscribers: [],
   options: {
@@ -42,4 +41,3 @@ export async function initializeDatabase(): Promise<DataSource> {
     throw error;
   }
 }
-

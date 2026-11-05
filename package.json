@@ -1,37 +1,39 @@
 {
   "name": "ai-label-ocr",
   "version": "1.0.0",
-  "description": "AI OCR Label Scanning System with Clean Architecture, TypeORM for SQL Server, and Archify Integration",
+  "description": "AI Garment Multi-Label Size Inspection System (Size Label, Care Label, Hang Tag)",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test:ocr": "tsx src/scripts/test-ocr.ts",
-    "seed": "tsx src/scripts/seed.ts",
+    "test:garment": "tsx src/scripts/test-garment-inspection.ts",
     "archify:generate": "tsx src/infrastructure/archify/generate-diagram.ts",
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "keywords": [
+    "garment",
+    "apparel",
     "ocr",
     "tesseract",
+    "inspection",
+    "qa",
+    "qc",
     "typescript",
-    "sql-server",
-    "typeorm",
-    "clean-architecture",
     "archify"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "archify": "^0.0.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "mssql": "^11.0.1",
     "multer": "^1.4.5-lts.1",
     "reflect-metadata": "^0.2.2",
     "tesseract.js": "^5.1.1",
     "typeorm": "^0.3.20",
-    "mssql": "^11.0.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {

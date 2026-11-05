@@ -1,17 +1,16 @@
 import { Router } from "express";
-import { LabelController } from "../controllers/label.controller.js";
 import { HealthController } from "../controllers/health.controller.js";
-import { createLabelRouter } from "./label.routes.js";
+import { GarmentInspectionController } from "../controllers/garment-inspection.controller.js";
+import { createGarmentInspectionRouter } from "./garment-inspection.routes.js";
 
 export function createApiRouter(
-  labelController: LabelController,
-  healthController: HealthController
+  healthController: HealthController,
+  garmentController: GarmentInspectionController
 ): Router {
   const router = Router();
 
   router.use("/health", healthController.check);
-  router.use("/labels", createLabelRouter(labelController));
+  router.use("/garment-inspections", createGarmentInspectionRouter(garmentController));
 
   return router;
 }
-
